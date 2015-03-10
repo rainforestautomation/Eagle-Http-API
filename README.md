@@ -103,7 +103,7 @@ You can access the returned data attributes like so:
     Connected
 
 * eagle.get_network_statis([mac_id])
-    mac_id - (Optional) is intended for eagles with multiple zigbee radios 
+    * mac_id - (Optional) is intended for eagles with multiple zigbee radios 
 
 Returns network Status of Eagle
 
@@ -124,7 +124,7 @@ Which can be accessed like:
     Connected
 
 * eagle.get_instantaneous_demand([mac_id])
-    mac_id - (Optional) is intended for eagles with multiple zigbee radios 
+    * mac_id - (Optional) is intended for eagles with multiple zigbee radios 
 
 Returns instantaneous demand from eagle
 
@@ -146,7 +146,7 @@ Which can be accessed like:
     0x0003b0
 
 * eagle.get_price([mac_id])
-    mac_id - (Optional) is intended for eagles with multiple zigbee radios 
+    * mac_id - (Optional) is intended for eagles with multiple zigbee radios 
     
 Returns price cluster from Eagle:
 
@@ -170,7 +170,7 @@ Which can be accessed like:
     0x0000000a
 
 * eagle.get_message([mac_id])
-    mac_id - (Optional) is intended for eagles with multiple zigbee radios 
+    * * mac_id - (Optional) is intended for eagles with multiple zigbee radios 
     
 Returns message cluster from Eagle:
 
@@ -193,8 +193,8 @@ Which can be accessed like:
     0x00000000
 
 * eagle.confirm_message(message_id, [mac_id])
-    message_id- 0x00-0xff message id number (stringified)
-    mac_id - (Optional) is intended for eagles with multiple zigbee radios 
+    * message_id - 0x00-0xff message id number (stringified)
+    * mac_id - (Optional) is intended for eagles with multiple zigbee radios 
     
 Returns message cluster from Eagle:
 
@@ -219,25 +219,25 @@ Which can be accessed like:
 
 
 * eagle.get_history_data(start_time,[end_time, mac_id)
-    start_time - 0x00000000 - current time (zigbee time, seconds from Jan 1, 2000 UTC)
-    end_time - 0x00000000 - current time (zigbee time, seconds from Jan 1, 2000 UTC)
-    mac_id - (Optional) is intended for eagles with multiple zigbee radios 
+    * start_time - 0x00000000 - current time (zigbee time, seconds from Jan 1, 2000 UTC)
+    * end_time - 0x00000000 - current time (zigbee time, seconds from Jan 1, 2000 UTC)
+    * mac_id - (Optional) is intended for eagles with multiple zigbee radios 
 
 Not currently working
 
 eagle.set_schedule('demand', '0x000a', 'Y')
 
 * eagle.set_schedule(event,frequency, enabled, [mac_id])
-    event - how often eagle queries for one of : demand, summation,message,scheduled_prices, price, billing_period,block_period,profile_data 
-    frequency - 0x0000- 0xffff time in seconds for a query
-    enabled - Y or N - whether query is enabled
-    mac_id - (Optional) is intended for eagles with multiple zigbee radios 
+    * event - how often eagle queries for one of : demand, summation,message,scheduled_prices, price, billing_period,block_period,profile_data 
+    * frequency - 0x0000- 0xffff time in seconds for a query
+    * enabled - Y or N - whether query is enabled
+    * mac_id - (Optional) is intended for eagles with multiple zigbee radios 
     
 No response will come back.
     
 * eagle.get_schedule(event,frequency, enabled, [mac_id])
-    event - how often eagle queries for one of : demand, summation,message,scheduled_prices, price, billing_period,block_period,profile_data
-    mac_id - (Optional) is intended for eagles with multiple zigbee radios 
+    * event - how often eagle queries for one of : demand, summation,message,scheduled_prices, price, billing_period,block_period,profile_data
+    * mac_id - (Optional) is intended for eagles with multiple zigbee radios 
 
 Returns ScheduleInfo from Eagle:
 
@@ -321,4 +321,3 @@ Where the arg is a integer, and will pretty print the outgoing request and respo
 # Issues
 
 The maintainer of this repo can be contacted at john dot lee at rainforestautomation dot com. Feel free to create issues if the api does something unexpected
-# Rainforest Automation
