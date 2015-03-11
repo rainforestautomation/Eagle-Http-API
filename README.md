@@ -97,6 +97,23 @@ Returns network info details of eagle.
       <Protocol>Zigbee</Protocol>
     </NetworkInfo>
 
+json:
+
+    {
+    "NetworkInfo": {
+    "DeviceMacId": "0xd8d5b90000002aeb",
+    "InstallCode": "0x94496e6dcf06b7d1",
+    "LinkKeyHigh": "0x4aecc18d050a0527",
+    "LinkKeyLow": "0x2b8caac18554435f",
+    "FWVersion": "1.4.48 (6952)",
+    "HWVersion": "1.2.5",
+    "Manufacturer": "Rainforest Automation, Inc.",
+    "ModelId": "Z109-EAGLE",
+    "DateCode": "2014051823520701",
+    "ImageType": "0x1301",
+    "Protocol": "Zigbee"}
+    }
+
 You can access the returned data attributes like so:
 
     > eagle.NetworkInfo.Status
@@ -116,7 +133,21 @@ Returns network Status of Eagle
       <Channel>18</Channel>
       <LinkStrength>0x64</LinkStrength>
       <Protocol>Zigbee</Protocol>
-    </NetworkInfo>    
+    </NetworkInfo>   
+
+json:
+
+    {
+    "NetworkInfo": {
+    "DeviceMacId": "0xd8d5b90000002aeb",
+    "Status": "Connected",
+    "CoordMacId": "0x000781000081fd17",
+    "ExtPanId": "0x000781000081fd17",
+    "ShortAddr": "0x8644",
+    "Channel": "18",
+    "LinkStrength": "0x64",
+    "Protocol": "Zigbee"}
+    } 
 
 Which can be accessed like:
 
@@ -140,6 +171,21 @@ Returns instantaneous demand from eagle
       <SuppressLeadingZero>Y</SuppressLeadingZero>
     </InstantaneousDemand>
 
+json:
+
+    {
+    "InstantaneousDemand": {
+    "DeviceMacId": "0xd8d5b90000002aeb",
+    "MeterMacId": "0x000781000081fd17",
+    "TimeStamp": "0x1c9347b8",
+    "Demand": "0x0003b0",
+    "Multiplier": "0x00000001",
+    "Divisor": "0x000003e8",
+    "DigitsRight": "0x03",
+    "DigitsLeft": "0x06",
+    "SuppressLeadingZero": "Y"}
+    }
+
 Which can be accessed like:
 
     >eagle.InstantaneousDemand.Demand
@@ -162,6 +208,23 @@ Returns price cluster from Eagle:
       <Tier>1</Tier>
       <RateLabel>Price1</RateLabel>
     </PriceCluster> 
+
+json:
+
+    {
+    "PriceCluster": {
+    "DeviceMacId": "0xd8d5b90000002aeb",
+    "MeterMacId": "0x000781000081fd17",
+    "TimeStamp": "0x1c9347ab",
+    "StartTime": "0x1c9347bb",
+    "Duration": "0xffff",
+    "Price": "0x0000000a",
+    "Currency": "0x03d2",
+    "TrailingDigits": "0x02",
+    "Tier": "1",
+    "RateLabel": "Price1"}
+    }
+    
 
 
 Which can be accessed like:
@@ -212,6 +275,21 @@ Returns message cluster from Eagle:
     </MessageCluster>
     
 
+json:
+
+    {
+    "MessageCluster": {
+    "DeviceMacId": "0xd8d5b90000002aeb",
+    "MeterMacId": "0x000781000081fd17",
+    "TimeStamp": "0x00000000",
+    "StartTime": "0x00000000",
+    "Duration": "0x0000",
+    "Id": "0x00000000",
+    "ConfirmationRequired": "N",
+    "Confirmed": "N",
+    "Read": "Y",
+    "Queue": "active"}
+    }
 Which can be accessed like:
 
     >eagle.MessageCluster.TimeStamp
@@ -248,15 +326,76 @@ Returns ScheduleInfo from Eagle:
       <Frequency>10</Frequency>
     </ScheduleInfo>
     
+json:
+
+    {
+    "ScheduleInfo": {
+    "DeviceMacId": "0x0000000000000000",
+    "MeterMacId": "0x0000000000000000",
+    "Event": "demand",
+    "Frequency": "10"}
+    }
+
 Which can be accessed like:
 
     >eagle.ScheduleInfo.Frequency
     10
 
+## Getting Raw XML Data
+
+This api was designed so you do not need to directly access the xml or json data, but can access instance variables instead. If you would like direct access to XML fragments returned from the HTTP API, you can simply:
+
+* Ensure instance.json = False
+* Make a request
+* Read the Instance object directly
+
+Example:
+
+    > instance.get_network_info()
+    > instance.NetworkInfo
+    <NetworkInfo>
+      <DeviceMacId>0xd8d5b90000002aeb</DeviceMacId>
+      <InstallCode>0x94496e6dcf06b7d1</InstallCode>
+      <LinkKeyHigh>0x4aecc18d050a0527</LinkKeyHigh>
+      <LinkKeyLow>0x2b8caac18554435f</LinkKeyLow>
+      <FWVersion>1.4.48 (6952)</FWVersion>
+      <HWVersion>1.2.5</HWVersion>
+      <Manufacturer>Rainforest Automation, Inc.</Manufacturer>
+      <ModelId>Z109-EAGLE</ModelId>
+      <DateCode>2014051823520701</DateCode>
+      <ImageType>0x1301</ImageType>
+      <Protocol>Zigbee</Protocol>
+    </NetworkInfo>
+
+## Getting Raw JSON Data
+
+Similarly, and most usefully for most pythonistas, to get the raw data in JSON you would:
+
+* Ensure instance.json = True
+* Make a request
+* Read the Instance object directly
+
+Example:
+
+    > instance.json = True
+    > instance.get_network_info()
+    {
+    "NetworkInfo": {
+    "DeviceMacId": "0xd8d5b90000002aeb",
+    "Status": "Connected",
+    "CoordMacId": "0x000781000081fd17",
+    "ExtPanId": "0x000781000081fd17",
+    "ShortAddr": "0x8644",
+    "Channel": "18",
+    "LinkStrength": "0x64",
+    "Protocol": "Zigbee"}
+    }
+ 
+
+##Telling the API to Quiet down
 The Eagle-Http-API is by default pretty noisy on the command line.  To quiet it down:
 
     eagle.noisy = False
-    
 
 The eagle-http object also keeps track of the send/receive history in found in eagle.history list
 
@@ -316,8 +455,17 @@ If you are using this tool interactively, you can use:
     </NetworkInfo>
     
 
-
 Where the arg is a integer, and will pretty print the outgoing request and response
+
+# Commit Details
+
+- March 11th 2015 (1.1)  -  Added Support for JSON, 
+                            Adhered to DRY wrt api_classes (now using aliases)
+                            Updated documentarion to reflect JSON changes
+
+- March 10th, 2015 (1.0)  - Initial Commit
+
+
 # Issues
 
 The maintainer of this repo can be contacted at john dot lee at rainforestautomation dot com. Feel free to create issues if the api does something unexpected
