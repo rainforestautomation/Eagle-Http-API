@@ -7,6 +7,7 @@ import datetime
 
 
 class eagle_http():
+    host_local = 'https://192.168.100.169'
     host = 'https://rainforestcloud.com'
     port = 9445
     rurl = '/cgi-bin/post_manager'
@@ -16,6 +17,7 @@ class eagle_http():
     command_name= etree.Element('Name')
     mac_id = etree.Element('DeviceMacId')
     msg_id = etree.Element('Id')
+    format_ = etree.Element('Format')
     history_start_time = etree.Element('StartTime')
     history_end_time = etree.Element('EndTime')
     history_frequency = etree.Element('Frequency')
@@ -35,8 +37,7 @@ class eagle_http():
     cmd_set_schedule = "set_schedule"
     cmd_get_schedule = "get_schedule"
     noisy = True
-    
-    
+    json = False
     
     def __init__(self, uname, password, cloud_id):
         self.user_name = uname
@@ -50,37 +51,50 @@ class eagle_http():
             'Password':str(password_)
         }
         return self.headers
-    def send(self,xml_fragment,request_headers):
+    def send(self,send_data,request_headers):
         requests.packages.urllib3.disable_warnings()
         self.final_url =self.host+":"+str(self.port)+self.rurl
         try:
-            self.req = requests.post(self.final_url, data = xml_fragment, headers = request_headers, verify =False)
+            self.req = requests.post(self.final_url, data = send_data, headers = request_headers, verify =False)
             if self.noisy:
                 print self.final_url
-                print xml_fragment
+                print send_data
                 print self.req.text
-            returned_object =self.parse_response(self.req.text)
-            self.write_history(xml_fragment,self.req.text,returned_object)
+            if self.json:
+                returned_object =self.parse_json_response(self.req.text)
+            else:
+                returned_object =self.parse_xml_response(self.req.text)
+            self.write_history(send_data,self.req.text,returned_object)
         except Exception as e:
             print "Exception raised: "+str(e)
-    def parse_response(self, text):
+    def parse_xml_response(self, text):
         try:
             self.xmlTree =objectify.fromstring(text)
             module = __import__('api_classes')
             #print self.xmlTree.tag
             class_ = getattr(module, self.xmlTree.tag)
-            instance = class_(self.xmlTree, text)
+            instance = class_(self.json,self.xmlTree, text)
             setattr(self, self.xmlTree.tag, instance)
             return instance
         except:
-            pass
-    def write_history(self,sent_xml, recv_xml, return_obj):
+            raise
+    def parse_json_response(self, text):
+        module = __import__('api_classes')
+        json_obj = json.loads(text)
+        class_ = ""
+        for key in json_obj:
+            class_ = getattr(module, key)
+            instance = class_(self.json,json_obj, text)
+            print instance
+            setattr(self, key, instance)
+            return instance
+    def write_history(self,sent, received, return_obj):
         history_obj = {
             'time':str(datetime.datetime.now()),
             'command':self.command_name.text,
-            'sent_xml':sent_xml,
-            'recv_xml':recv_xml,
-            'obj':return_obj
+            'sent':sent,
+            'received':received,
+            'object':return_obj
         }
         self.history.append(history_obj)
     def readback(self, readback_count =100):
@@ -89,10 +103,10 @@ class eagle_http():
             print "Item Number: "+str(i)
             print "Datetime: "+str(item['time'])
             print "Command Sent: "+str(item['command'])
-            print "SENT XML --------------------------"
-            print str(item['sent_xml'])
-            print "RECEIVED XML-----------------------"
-            print str(item['recv_xml'])
+            print "SENT  --------------------------"
+            print str(item['sent'])
+            print "RECEIVED -----------------------"
+            print str(item['received'])
             if i > readback_count:
                 break
             i= i+1
@@ -103,6 +117,10 @@ class eagle_http():
         if mac_id is not None:
             self.mac_id.text = mac_id
             command_base.append(self.mac_id)
+        if self.json == True:
+            print "json"
+            self.format_.text = 'JSON'
+            command_base.append(self.format_)
         return command_base
     def get_network_info(self, mac_id= None):
         self.command = self.compose_root(self.cmd_get_network_info, mac_id)
@@ -175,6 +193,16 @@ class eagle_http():
         
 if __name__ == '__main__':
     instance = eagle_http('user_email', 'password', 'cloud_id')
+    instance.get_network_info()
+    instance.get_network_status()
+    instance.get_instantaneous_demand()
+    instance.get_price()
+    instance.get_message()
+    instance.confirm_message('0xFF')
+    instance.get_history_data('0x1c91d800','0x1c91d87d')
+    instance.set_schedule('demand', '0x000a', 'Y')
+    instance.get_schedule('demand')
+    instance.json = True
     instance.get_network_info()
     instance.get_network_status()
     instance.get_instantaneous_demand()
