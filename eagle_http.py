@@ -149,7 +149,7 @@ class eagle_http():
         self.xml_fragment =etree.tostring(self.command, pretty_print=True)
         self.send(self.xml_fragment, self.headers)
     def get_current_summation(self, mac_id = None):
-        self.command = self.compose_root(self.get_current_summation, mac_id)
+        self.command = self.compose_root(self.cmd_get_current_summation, mac_id)
         self.xml_fragment =etree.tostring(self.command, pretty_print=True)
         self.send(self.xml_fragment, self.headers)
     def get_history_data(self,start_time, end_time=None,frequency =None,mac_id= None):
