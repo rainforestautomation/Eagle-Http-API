@@ -7,11 +7,12 @@ import datetime
 
 
 class eagle_http():
-    host_local = 'https://192.168.100.169'
+    host_local = '192.168.100.169'
     host = 'https://rainforestcloud.com'
     port = 9445
     rurl = '/cgi-bin/post_manager'
     history = []
+    local = False
     #XML Fragment constructs
     command_root= etree.Element('Command')
     command_name= etree.Element('Name')
@@ -53,7 +54,11 @@ class eagle_http():
         return self.headers
     def send(self,send_data,request_headers):
         requests.packages.urllib3.disable_warnings()
-        self.final_url =self.host+":"+str(self.port)+self.rurl
+        if self.local:
+            self.final_url = "https://"+self.user_name+":"+self.user_password+"@"+self.host_local+self.rurl
+            print self.final_url
+        else:
+            self.final_url =self.host+":"+str(self.port)+self.rurl
         try:
             self.req = requests.post(self.final_url, data = send_data, headers = request_headers, verify =False)
             if self.noisy:
@@ -192,7 +197,8 @@ class eagle_http():
         
         
 if __name__ == '__main__':
-    instance = eagle_http('user_email', 'password', 'cloud_id')
+    instance = eagle_http('001226', '94496e6dcf06b7d1', 'cloud_id')
+    instance.local= True
     instance.get_network_info()
     instance.get_network_status()
     instance.get_instantaneous_demand()
