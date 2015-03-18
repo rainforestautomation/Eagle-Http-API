@@ -7,7 +7,7 @@ import datetime
 
 
 class eagle_http():
-    host_local = '192.168.100.169'
+    host_local = 'eaf'
     host = 'https://rainforestcloud.com'
     port = 9445
     rurl = '/cgi-bin/post_manager'
@@ -55,7 +55,7 @@ class eagle_http():
     def send(self,send_data,request_headers):
         requests.packages.urllib3.disable_warnings()
         if self.local:
-            self.final_url = "https://"+self.user_name+":"+self.user_password+"@"+self.host_local+self.rurl
+            self.final_url = "https://"+self.user_name+":"+self.user_password+"@eagle-"+self.user_name+".local"+self.rurl
             print self.final_url
         else:
             self.final_url =self.host+":"+str(self.port)+self.rurl
