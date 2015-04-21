@@ -1,3 +1,12 @@
+2015-04-20  Chrome Browser Extension Released!
+
+![alt tag](https://lh3.googleusercontent.com/-BGEkB6ghmKoZfKBUjj_i0jpYQEoeYy_ApB4Yoweeg5hbkTGdC0ZxznTYkgiMCyse4Bd8cLOow=s640-h400-e365)
+
+A new chrome extension has been released which allows you to view your energy usage by simply looking at an icon in your browser. To tryi it out, go here:
+
+https://chrome.google.com/webstore/detail/rainforest-automation-eag/jogodcnmpmgfihdjebbnbmpcmolipioi
+
+
 # EAGLE-HTTP-API
 
 The Rainforest Automation Eagle is a energy monitoring unit which allows you to monitor your home's power condumption in real time by connecting to your smart meter through Zigbee.
