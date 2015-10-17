@@ -128,7 +128,7 @@ You can access the returned data attributes like so:
     > eagle.NetworkInfo.Status
     Connected
 
-* eagle.get_network_statis([mac_id])
+* eagle.get_network_status([mac_id])
     * mac_id - (Optional) is intended for eagles with multiple zigbee radios 
 
 Returns network Status of Eagle
