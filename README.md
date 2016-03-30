@@ -74,9 +74,7 @@ In order to use this API you need:
 
 Installation is straight forward, and the preqreqs are lxml and requests
 
-    > git clone https://github.com/rainforestautomation/Eagle-Http-API.git
-    > cd ./Eagle-Http-API
-    > pip install -r requirements.txt
+    > pip install eagle_http 
 
 Good to go!
 
